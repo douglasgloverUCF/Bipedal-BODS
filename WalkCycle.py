@@ -30,12 +30,12 @@ def stretchDis(theta):
 # returns target angle of knee in radians
 def kneeAngle(theta):
     dis = stretchDis(theta)
-    return math.pi - math.asin((dis / 2) / r) * 2  # 0 is pointing lower leg straight
+    return math.pi - math.asin((dis / 2) / r) * 2 + math.pi/2 # 90 is pointing lower leg straight
 
 # returns target angle of hip in radians
 def hipAngle(theta):
     dis = stretchDis(theta)
-    return math.acos((dis / 2) / r) # 0 is pointing upper leg straight
+    return math.acos((dis / 2) / r) + math.pi/2 # 90 is pointing upper leg straight
 
 # kit = ServoKit(channels=16)
 hip = 1
