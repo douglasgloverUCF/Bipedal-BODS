@@ -29,7 +29,7 @@ def map(x, in_min, in_max, out_min, out_max):
     Returns:
         int: The number x, but converted to the new range
     """
-    return int((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
+    return float((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 
 
 def convert_angle(angle):

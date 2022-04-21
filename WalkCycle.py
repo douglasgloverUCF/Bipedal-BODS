@@ -3,10 +3,10 @@ from Resources import convert_angle, map
 import math
 from time import sleep
 
-length = 1 # length of leg part (set to clarify units)
+length = 6.402 # length of leg part (in inches)
 
 # Settings of gait
-r = length # radius of gait shape (can become a function later if we choose)
+r = 0.6 # radius of gait shape (can become a function later if we choose)
 # position of gait shape's center
 xPos = 0 
 yPos = -math.sqrt(3) * length
@@ -17,8 +17,8 @@ def fx(theta):
 # returns y position of ankle joint relative to hip joint
 def fy(theta):
     y = r / 2 * math.sin(theta) + abs(r / 2 * math.sin(theta)) # y function of gait
+    # y = 0
     return y + yPos
-
 
 
 # returns distance between ankle joint and hip joint
@@ -30,17 +30,18 @@ def stretchDis(theta):
 # returns target angle of knee in radians
 def kneeAngle(theta):
     dis = stretchDis(theta)
-    return math.pi - math.asin((dis / 2) / r) * 2 + math.pi/2 # 90 is pointing lower leg straight
+    return 3 * math.pi/2 - math.asin((dis / 2) / length) * 2 # 90 is pointing lower leg straight
 
 # returns target angle of hip in radians
 def hipAngle(theta):
     dis = stretchDis(theta)
-    return math.acos((dis / 2) / r) + math.pi/2 # 90 is pointing upper leg straight
+    return math.acos((dis / 2) / length) + math.pi/2 # 90 is pointing upper leg straight
 
-# kit = ServoKit(channels=16)
+#kit = ServoKit(channels=16)
 hip = 1
 knee = 2
-foot = 3
+hip2 = 3
+knee2 = 4
 theta = 0
 
 while(True):
@@ -49,12 +50,22 @@ while(True):
         theta = 0
     
     thetaRad = math.radians(theta)
+    thetaRad2 = math.radians(theta + 180)
 
-    sleep(0.2)
-    # kit.servo[hip].angle = map(math.degrees(hipAngle(theta)),0,270,0,180) 
-    # kit.servo[knee].angle = map(math.degrees(kneeAngle(thetaRad)),0,270,0,180) 
-    # kit.servo[foot].angle = map(math.degrees(hipAngle(thetaRad)),0,270,0,180)
+
+    hipangle = map(math.degrees(hipAngle(thetaRad)),0,270,0,180) 
+    kneeangle = map(math.degrees(kneeAngle(thetaRad)),0,270,0,180) 
+    hipangle2 = map(math.degrees(hipAngle(thetaRad2)),0,270,0,180) 
+    kneeangle2 = map(math.degrees(kneeAngle(thetaRad2)),0,270,0,180) 
+
+    sleep(0.01)
+    #kit.servo[hip].angle = hipangle 
+    #kit.servo[knee].angle = kneeangle
+    #kit.servo[hip2].angle = hipangle2
+    #kit.servo[knee2].angle = kneeangle2
     print("\nTheta =          " + str(theta))
-    print("Hip Angle =      " + str(math.degrees(hipAngle(thetaRad))))
-    print("Knee Angle =     " + str(math.degrees(kneeAngle(thetaRad))))
+    print("Hip Angle =      " + str(hipangle))
+    print("Knee Angle =     " + str(kneeangle))
+    print("Hip Angle2 =      " + str(hipangle2))
+    print("Knee Angle2 =     " + str(kneeangle2))
     print("Leg span =       " + str(stretchDis(thetaRad)))
